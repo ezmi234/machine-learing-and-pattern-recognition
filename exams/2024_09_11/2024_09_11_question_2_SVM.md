@@ -49,11 +49,22 @@ SVMs are an alternative to Logistic Regression (LR). While LR minimizes the logi
   $$
   \min_{w,b,\xi} \frac{1}{2}\|w\|^2 + C \sum_i \xi_i \quad \text{s.t. } z_i(w^T x_i + b) \geq 1 - \xi_i.
   $$
+  
+  **Soft margin example**:
+  ![soft-margin](./soft-margin.png) 
 
-  Equivalent to **hinge loss formulation**:
+  Here, the regularization parameter $C>0$ controls the trade off between maximizing the margin and minimization classification errors.
 
+  The primal soft margin problem can be rewritten by absorbing the constraints into the objective by the loss terms:
   $$
   \min_{w,b} \frac{1}{2}\|w\|^2 + C \sum_i \max(0, 1 - z_i(w^T x_i + b)).
+  $$
+
+  This is known as **hinge loss**.
+  ![Hinge loss](./hinge_loss.png) 
+  Data points that are on the correct side of the margin respect the constraint, so for them:
+  $$
+  z_i(w^T x_i + b) \geq 1 \ \ \text{so} \ \ 1- z_i(w^T x_i + b) \leq 0
   $$
 
 * **Dual formulation:**
@@ -71,6 +82,8 @@ SVMs are an alternative to Logistic Regression (LR). While LR minimizes the logi
   $$
 
   Only points with $\alpha_i > 0$ (support vectors) influence the solution.
+  
+  Dual reveals that SVM depends only on **inner products** of data, so we have the foundation for the **kernel trick**.
 
 ---
 
@@ -83,9 +96,16 @@ SVMs are an alternative to Logistic Regression (LR). While LR minimizes the logi
   k(x_i, x_j) = \phi(x_i)^T \phi(x_j),
   $$
 
-  where $\phi(\cdot)$ maps data into a higher-dimensional feature space.
+  where $\phi(x)$ maps data into a higher-dimensional feature space.
 * This yields the **kernel trick**, enabling non-linear decision boundaries without explicitly computing $\phi$.
-* Common kernels: polynomial, Gaussian RBF.
+
+So the decision rule becomes:
+$$
+s(x_t)=\sum_{i=1|\alpha_i>0}\alpha_i z_i k(x_i,x_t)+b
+$$
+* Common kernels: 
+- **Polynomial**:  $\ \ \ \ k(x_i,x_j)=(x_i^T x_j + 1)^d$
+- **Gaussian RBF**: $\ \ \ k(x_i, x_j)=e^{-\gamma ||x_i-x_j||^2}$
 
 ---
 
@@ -108,6 +128,7 @@ Both SVM and Logistic Regression can be seen as **regularized risk minimization*
   $$
 
   → Risk measured by **hinge loss** (piecewise linear, margin-based).
+  ![loss](./hinge_loss.png) 
 
 * **Comparison**:
 
