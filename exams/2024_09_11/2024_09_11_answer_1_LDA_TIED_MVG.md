@@ -44,7 +44,7 @@
   Compute the **log-likelihood ratio**:
 
   $$
-  \text{llr}(x) = \log \frac{f(x|\mu_1,\Sigma)}{f(x|\mu_0,\Sigma)} + \log\frac{\pi}{1-\pi}.
+  \text{llr}(x) = \log \frac{f(x|\mu_1,\Sigma)}{f(x|\mu_0,\Sigma)} 
   $$
 
   This simplifies to a **linear discriminant function** wᵀx + b.
