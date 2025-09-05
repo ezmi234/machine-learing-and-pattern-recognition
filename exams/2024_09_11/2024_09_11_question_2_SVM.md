@@ -100,7 +100,7 @@ $$
   \quad \text{s.t. } 0 \leq \alpha_i \leq C,\;\; \sum_i \alpha_i z_i = 0.
   $$
 
-  Relationship:
+  So the relationship between the primal and the dual formulation is:
 
   $$
   w = \sum_i \alpha_i z_i x_i.
