@@ -1,5 +1,8 @@
 ### **Support Vector Machines (SVM)**
-SVMs are an alternative to Logistic Regression (LR). While LR minimizes the logistic loss with regularization, SVMs solve a generalized risk minimization problem. They achieve non linear separation using the Kernel Trick, avoiding explicit feature expansion. SVM scores are not probabilistic.
+
+SVMs are an alternative to Logistic Regression (LR). While LR minimizes the logistic loss with regularization, SVMs
+solve a generalized risk minimization problem. They achieve non linear separation using the Kernel Trick, avoiding
+explicit feature expansion. SVM scores are not probabilistic.
 
 #### **1. Classification rule and score interpretation**
 
@@ -15,57 +18,79 @@ SVMs are an alternative to Logistic Regression (LR). While LR minimizes the logi
   f(x_i) < 0 \;\;\text{if } c_i = \mathcal{H}_F
   $$
 
+i.e., assign class +1 if $f(x) > 0$, −1 otherwise.
 
-  i.e., assign class +1 if $f(x) > 0$, −1 otherwise.
-* The **SVM score** $f(x)$ is the signed distance of sample x from the separating hyperplane, scaled by $\|w\|$. The magnitude indicates confidence, the sign indicates the predicted class.
+* The **SVM score** $f(x)$ is the signed distance of sample x from the separating hyperplane, scaled by $\|w\|$. The
+  magnitude indicates confidence, the sign indicates the predicted class.
 
 ---
 
 #### **2. Margin concept**
-* The **margin** is the distance between the separating hyperplane and the closest data points (support vectors).
-* For correctly classified samples with labels $z_i \in \{-1, +1\}$:
 
-  $$
-  z_i(w^T x_i + b) \geq 1.
-  $$
-* The margin is $\frac{1}{\|w\|}$.
+* The **margin** is the distance between the separating hyperplane and the closest data points (support vectors).
+
+* For a hyperplane defined by $w^T x + b = 0$, the distance of a point $x_i$ to the hyperplane is
+
+$$
+d(x_i) = \frac{|w^T x_i + b|}{\|w\|}.
+$$
+
+* If we require that each correctly classified point satisfies
+
+$$
+z_i(w^T x_i + b) \geq 1, \quad z_i \in \{-1, +1\},
+$$
+
+then the **closest point(s)** (support vectors) will satisfy $z_i(w^T x_i + b) = 1$.
+
+* In this case, the margin is
+
+$$
+\text{margin} = \frac{1}{\|w\|}.
+$$
 * When data is linearly separable, many hyperplanes can separate the classes. SVM chooses the hyperplane that **maximizes the margin** between the closest points and the decision boundary.
 
----
+#### **3. Primal and dual formulations**
 
-#### **3. Primal and dual formulation**
+Thus, maximizing the margin is equivalent to minimizing $\|w\|$. For convenience and convexity, we minimize the squared
+norm $\tfrac{1}{2}\|w\|^2$.
 
 * **Primal – hard margin (linearly separable data):**
 
-  $$
-  \min_{w,b} \frac{1}{2}\|w\|^2 \quad \text{s.t. } z_i(w^T x_i + b) \geq 1, \;\; \forall i.
-  $$
+$$
+\min_{w,b} \;\; \tfrac{1}{2}\|w\|^2 \quad \text{s.t. } z_i(w^T x_i + b) \geq 1, \; \forall i.
+$$
 
-  Convex quadratic program.
+This convex quadratic program encodes the geometric principle of margin maximization.
 
 * **Primal – soft margin (non-separable data):**
-  Introduce slack variables $\xi_i \geq 0$:
+  Slack variables $\xi_i \geq 0$ allow misclassifications:
 
-  $$
-  \min_{w,b,\xi} \frac{1}{2}\|w\|^2 + C \sum_i \xi_i \quad \text{s.t. } z_i(w^T x_i + b) \geq 1 - \xi_i.
-  $$
-  
-  **Soft margin example**:
-  ![soft-margin](./soft-margin.png) 
+$$
+\min_{w,b,\xi} \;\; \tfrac{1}{2}\|w\|^2 + C \sum_i \xi_i
+\quad \text{s.t. } z_i(w^T x_i + b) \geq 1 - \xi_i.
+$$
 
-  Here, the regularization parameter $C>0$ controls the trade off between maximizing the margin and minimization classification errors.
+**Soft margin example**:
+![soft-margin](./soft-margin.png)
 
-  The primal soft margin problem can be rewritten by absorbing the constraints into the objective by the loss terms:
-  $$
-  \min_{w,b} \frac{1}{2}\|w\|^2 + C \sum_i \max(0, 1 - z_i(w^T x_i + b)).
-  $$
+Here, the regularization parameter $C>0$ controls the trade off between maximizing the margin and minimize the
+classification errors.
 
-  This is known as **hinge loss**.
-  ![Hinge loss](./hinge_loss.png) 
-  Data points that are on the correct side of the margin respect the constraint, so for them:
-  $$
-  z_i(w^T x_i + b) \geq 1 \ \ \text{so} \ \ 1- z_i(w^T x_i + b) \leq 0
-  $$
+Equivalently, constraints can be embedded into the objective through the **hinge loss**:
+
+$$
+\min_{w,b} \;\; \tfrac{1}{2}\|w\|^2 + C \sum_i \max(0, 1 - z_i(w^T x_i + b)).
+$$
+
+Here, the first term $\tfrac{1}{2}\|w\|^2$ enforces margin maximization (complexity control), while the second term
+penalizes violations of the margin.
+
+![Hinge loss](./hinge_loss.png)
+Data points that are on the correct side of the margin respect the constraint, so for them:
+$$
+z_i(w^T x_i + b) \geq 1 \ \ \text{so} \ \ 1- z_i(w^T x_i + b) \leq 0
+$$
 
 * **Dual formulation:**
   By introducing Lagrange multipliers $\alpha_i \geq 0$:
@@ -82,7 +107,7 @@ SVMs are an alternative to Logistic Regression (LR). While LR minimizes the logi
   $$
 
   Only points with $\alpha_i > 0$ (support vectors) influence the solution.
-  
+
   Dual reveals that SVM depends only on **inner products** of data, so we have the foundation for the **kernel trick**.
 
 ---
@@ -103,7 +128,9 @@ So the decision rule becomes:
 $$
 s(x_t)=\sum_{i=1|\alpha_i>0}\alpha_i z_i k(x_i,x_t)+b
 $$
-* Common kernels: 
+
+* Common kernels:
+
 - **Polynomial**:  $\ \ \ \ k(x_i,x_j)=(x_i^T x_j + 1)^d$
 - **Gaussian RBF**: $\ \ \ k(x_i, x_j)=e^{-\gamma ||x_i-x_j||^2}$
 
@@ -128,12 +155,13 @@ Both SVM and Logistic Regression can be seen as **regularized risk minimization*
   $$
 
   → Risk measured by **hinge loss** (piecewise linear, margin-based).
-  ![loss](./hinge_loss.png) 
+  ![loss](./hinge_loss.png)
 
 * **Comparison**:
 
-  * Both balance **empirical risk** (loss) and **model complexity** ($\|w\|^2$ regularization).
-  * Logistic regression outputs **probabilities**, SVM outputs **scores/distances** without direct probabilistic meaning.
-  * Logistic loss decreases smoothly for correctly classified points; hinge loss is flat once margin ≥ 1.
-  * SVM focuses only on **support vectors**, Logistic Regression uses all training points.
+    * Both balance **empirical risk** (loss) and **model complexity** ($\|w\|^2$ regularization).
+    * Logistic regression outputs **probabilities**, SVM outputs **scores/distances** without direct probabilistic
+      meaning.
+    * Logistic loss decreases smoothly for correctly classified points; hinge loss is flat once margin ≥ 1.
+    * SVM focuses only on **support vectors**, Logistic Regression uses all training points.
 

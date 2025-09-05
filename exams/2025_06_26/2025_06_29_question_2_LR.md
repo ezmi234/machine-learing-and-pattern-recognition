@@ -1,35 +1,48 @@
 ### Binary logistic regression
 
-The binary logistic regression is a discriminative probabilistic model with linear decision boundaries
+The binary logistic regression is a discriminative probabilistic model with linear decision boundaries. In particular, for binary case it aims at modeling the class posterior probabilities.
+$$
+P(C=1|x), \ P(C=0|x)=1-P(C=1|x)
+$$
+where $x$ is the sample that we want to classify, and the possible class labels are 1 and 0.
 
 **Classification rule**:
-- Model computes a **score**:
+- The model assumes that the separation surface between the classes
+is a linear surface (hyperplane), corresponding to linear decision
+functions of the form:
   $$
-  s(x)=w^tx+b 
+  s(x; w, b)=w^tx+b  \lessgtr t
   $$
+- $(w,b)$ are the model parameters and represent the separation
+surface.
 - Classification rule: assign class 1 if $s(x)\ge t$, class 0 otherwise.
 - With equal priors and symmetric costs, the optimal threshold is $t=0$.
 - Decision boundaries are linear hyperplanes orthogonal to $w$.
 
 **Probabilistic interpretation** 
-- Logistic regression directly models posterior probability:
-  $$
-  P(C=1|x) = \sigma(s(x)) = \frac{1}{1 + e^{-s(x)}}, \quad
-  P(C=0|x) = 1 - \sigma(s(x)).
-  $$
-  * The score $s(x)$ corresponds to the **log-posterior odds**:
+* The score $s(x)$ corresponds to the **log-posterior odds**:
 
   $$
   s(x) = \log \frac{P(C=1|x)}{P(C=0|x)}.
   $$
+- So, posterior probabilities for the classes are computed as: 
+  $$
+  P(C=1|x; w, b) = \sigma(s(x; w,b)) = \frac{1}{1 + e^{-s(x)}}, \\ P(C=0|x; w,b) = 1 - \sigma(s(x;w,b)).
+  $$
+- Where $\sigma$ denotes the sigmoid function:
+![sigmoid](./sigmoid.png) 
 * Interpretation: smooth probabilistic mapping from linear function of x.
 
 ---
 
 #### **Parameter estimation & training objective**
 
-* Training data: $\{(x_i, c_i)\}_{i=1}^N$, with $c_i \in \{0,1\}$.
-* Likelihood:
+* Each label $c_i \in \{0,1\}$ is modeled as a **Bernoulli random variable** with parameter $\sigma(s(x_i))$:
+
+  $$
+  P(C=c_i|x_i,w,b) = \sigma(s_i)^{c_i}(1-\sigma(s_i))^{1-c_i}.
+  $$
+* Likelihood (i.i.d. samples):
 
   $$
   L(w,b) = \prod_{i=1}^N P(C=c_i|x_i,w,b).
@@ -37,9 +50,9 @@ The binary logistic regression is a discriminative probabilistic model with line
 * Log-likelihood:
 
   $$
-  \ell(w,b) = \sum_{i=1}^N \big[c_i \log \sigma(s_i) + (1-c_i)\log(1-\sigma(s_i))\big].
+  \ell(w,b) = \sum_{i=1}^N \big[c_i\log\sigma(s_i) + (1-c_i)\log(1-\sigma(s_i))\big].
   $$
-* Training = **maximize log-likelihood**, equivalently **minimize cross-entropy loss**:
+* Training = **maximize log-likelihood** or equivalently **minimize cross-entropy**:
 
   $$
   J(w,b) = -\ell(w,b).
@@ -47,10 +60,9 @@ The binary logistic regression is a discriminative probabilistic model with line
 * Alternative view: **risk minimization** with logistic loss
 
   $$
-  \ell(z,s) = \log(1 + e^{-z s}), \quad z \in \{-1,+1\}.
+  \ell(z,s) = \log(1+e^{-z s}), \quad z \in \{-1,+1\}.
   $$
-* Parameters are estimated numerically (no closed form), usually via gradient descent or Newton methods.
-* Regularization (e.g., $\lambda \|w\|^2/2$) is often added to prevent overfitting.
+* Optimization is numerical (no closed form). Regularization (e.g. $\tfrac{\lambda}{2}\|w\|^2$) controls complexity and avoids overfitting .
 
 ---
 
