@@ -53,9 +53,6 @@
   \Sigma = \frac{1}{N} \sum_{c} \sum_{i|c_i=c} (x_i - \mu_c)(x_i - \mu_c)^T
   $$
 
-
-Here’s a more cohesive and verbose rewrite of that **inference** part for the **Tied MVG classifier**, explicitly showing the log-likelihood ratio expansion, the meaning of the bias term $b$, and its relation to priors:
-
 **Inference:**
 
 For binary classification with classes $C \in \{0,1\}$, the decision is based on the **log-posterior ratio**:
