@@ -12,10 +12,10 @@
   $$
   where:
   $$
-  S_B = \frac{1}{N}\sum_{c=i}^k n_c(\mu_c-\mu)(\mu_c-\mu)^T
+  S_B = \frac{1}{N}\sum_{c=1}^k n_c(\mu_c-\mu)(\mu_c-\mu)^T
   $$
   $$
-  S_W = \frac{1}{N}\sum_{c=i}^k \sum_{i=i}^{n_c} (x_{c,i}-\mu_c)(x_{c,i}-\mu_c)^T
+  S_W = \frac{1}{N}\sum_{c=1}^k \sum_{i=1}^{n_c} (x_{c,i}-\mu_c)(x_{c,i}-\mu_c)^T
   $$
 
   $x_{c,i}=\text{i-th}$ sample of class $c$; $n_c=$ # samples in class $c$; $k$ # of classes (0,1); $N$ # total number
