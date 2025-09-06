@@ -75,6 +75,13 @@ surface.
   $$
 * Optimization is numerical (no closed form). Regularization (e.g. $\tfrac{\lambda}{2}\|w\|^2$) controls complexity and avoids overfitting .
 
+* **Regularization**
+  When classes are linearly separable, the logistic regression solution is not defined because objective function approaches zero only as the norm of $w$ grows to infinity. To make problems solvable and avoid overfitting, we introduce a regularization term penalty into the averaged objective function ($ \lambda > 0$):
+  $$
+  R(w,b) = \frac{\lambda}{2}||w||^2 + \frac{1}{n} \sum_{i=1}^n \log(1+e^{-z_i(w^Tx_i+b)})
+  $$
+  if $\lambda$ is too large, the model underfits the training data. On the other hand, if it's too small, it overfits it.
+  
 ---
 
 #### **Non-linear classification extension**
