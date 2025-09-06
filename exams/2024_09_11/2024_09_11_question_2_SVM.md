@@ -1,24 +1,22 @@
 ### **Support Vector Machines (SVM)**
 
-SVMs are an alternative to Logistic Regression (LR). While LR minimizes the logistic loss with regularization, SVMs
-solve a generalized risk minimization problem. They achieve non linear separation using the Kernel Trick, avoiding
+SVMs are a discriminative binary classifier that solve a generalized risk minimization problem. They achieve non linear separation using the Kernel Trick, avoiding
 explicit feature expansion. SVM scores are not probabilistic.
 
 #### **1. Classification rule and score interpretation**
 
-* The SVM decision function is
-
+* Given a **training dataset** $\{(x_i, z_i)\}_{i=1}^N$, where each input $x_i \in \mathbb{R}^d$ is a feature vector and $z_i \in \{-1,+1\}$ is the corresponding class label encoded as $z_i = 2 c_i - 1$. SVM seeks a linear decision function of the form:
   $$
   f(x) = w^T x + b.
   $$
-* The **classification rule**:
+* Since classes are separable, the **classification rule** is based on the sign of $f(x)$:
 
   $$
-  f(x_i) > 0 \;\;\text{if } c_i = \mathcal{H}_T \\
-  f(x_i) < 0 \;\;\text{if } c_i = \mathcal{H}_F
+  f(x_i) > 0 \;\;\text{if } c_i = \mathcal{H}_T \text{ so } z_i = +1
   $$
-
-i.e., assign class +1 if $f(x) > 0$, −1 otherwise.
+  $$
+  f(x_i) < 0 \;\;\text{if } c_i = \mathcal{H}_F \text{ so } z_i = -1
+  $$
 
 * The **SVM score** $f(x)$ is the signed distance of sample x from the separating hyperplane, scaled by $\|w\|$. The
   magnitude indicates confidence, the sign indicates the predicted class.
@@ -32,7 +30,7 @@ i.e., assign class +1 if $f(x) > 0$, −1 otherwise.
 * For a hyperplane defined by $w^T x + b = 0$, the distance of a point $x_i$ to the hyperplane is
 
 $$
-d(x_i) = \frac{|w^T x_i + b|}{\|w\|}.
+d(x_i) = \frac{|z_i(w^T x_i + b)|}{\|w\|}.
 $$
 
 * If we require that each correctly classified point satisfies
@@ -53,18 +51,14 @@ $$
 #### **3. Primal and dual formulations**
 
 Thus, maximizing the margin is equivalent to minimizing $\|w\|$. For convenience and convexity, we minimize the squared
-norm $\tfrac{1}{2}\|w\|^2$.
-
-* **Primal – hard margin (linearly separable data):**
-
+norm $\tfrac{1}{2}\|w\|^2$. It follows that for linearly separable data (hard margin), the Primal formulation is:
 $$
 \min_{w,b} \;\; \tfrac{1}{2}\|w\|^2 \quad \text{s.t. } z_i(w^T x_i + b) \geq 1, \; \forall i.
 $$
 
-This convex quadratic program encodes the geometric principle of margin maximization.
+This is a convex quadratic programming problem with linear constraints.
 
-* **Primal – soft margin (non-separable data):**
-  Slack variables $\xi_i \geq 0$ allow misclassifications:
+* For non-separable data, SVM introduces slack variables $\xi_i \geq 0$ allowing misclassifications (soft margin):
 
 $$
 \min_{w,b,\xi} \;\; \tfrac{1}{2}\|w\|^2 + C \sum_i \xi_i
@@ -74,7 +68,7 @@ $$
 **Soft margin example**:
 ![soft-margin](./soft-margin.png)
 
-Here, the regularization parameter $C>0$ controls the trade off between maximizing the margin and minimize the
+Here, the regularization parameter $C>0$ controls the trade-off between maximizing the margin and minimize the
 classification errors.
 
 Equivalently, constraints can be embedded into the objective through the **hinge loss**:
@@ -83,7 +77,7 @@ $$
 \min_{w,b} \;\; \tfrac{1}{2}\|w\|^2 + C \sum_i \max(0, 1 - z_i(w^T x_i + b)).
 $$
 
-Here, the first term $\tfrac{1}{2}\|w\|^2$ enforces margin maximization (complexity control), while the second term
+Here, the first term $\tfrac{1}{2}\|w\|^2$ enforces margin maximization, while the second term
 penalizes violations of the margin.
 
 ![Hinge loss](./hinge_loss.png)
@@ -92,7 +86,7 @@ $$
 z_i(w^T x_i + b) \geq 1 \ \ \text{so} \ \ 1- z_i(w^T x_i + b) \leq 0
 $$
 
-* **Dual formulation:**
+* More over we achieve **Dual formulation**
   By introducing Lagrange multipliers $\alpha_i \geq 0$:
 
   $$
@@ -100,7 +94,7 @@ $$
   \quad \text{s.t. } 0 \leq \alpha_i \leq C,\;\; \sum_i \alpha_i z_i = 0.
   $$
 
-  So the relationship between the primal and the dual formulation is:
+  Where the relationship between the primal and the dual formulation is:
 
   $$
   w = \sum_i \alpha_i z_i x_i.
@@ -151,7 +145,7 @@ Both SVM and Logistic Regression can be seen as **regularized risk minimization*
 * **SVM**:
 
   $$
-  \min_{w,b} \frac{1}{2}\|w\|^2 + C \sum_{i=1}^N \max(0, 1 - z_i(w^T x_i + b)).
+  \min_{w,b} \frac{\lambda}{2}\|w\|^2 + C \sum_{i=1}^N \max(0, 1 - z_i(w^T x_i + b)).
   $$
 
   → Risk measured by **hinge loss** (piecewise linear, margin-based).
