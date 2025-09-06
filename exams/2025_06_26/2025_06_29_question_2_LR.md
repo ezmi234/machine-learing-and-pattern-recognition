@@ -1,10 +1,18 @@
 ### Binary logistic regression
 
-The binary logistic regression is a discriminative probabilistic model with linear decision boundaries. In particular, for binary case it aims at modeling the class posterior probabilities.
+The binary logistic regression is a discriminative probabilistic model with linear decision boundaries. 
+Suppose we are given a **labeled dataset**
+
+$$
+\{(x_i, c_i)\}_{i=1}^N,
+$$
+
+where each feature vector $x_i \in \mathbb{R}^d$ represents a sample and each class label $c_i \in \{0,1\}$ indicates membership to class 1 or class 0. Assuming that feature vectors and corresponding class labels are i.i.d.. 
+
+For binary case Logistic Regression aims at modeling the class posterior probabilities.
 $$
 P(C=1|x), \ P(C=0|x)=1-P(C=1|x)
 $$
-where $x$ is the sample that we want to classify, and the possible class labels are 1 and 0.
 
 **Classification rule**:
 - The model assumes that the separation surface between the classes
@@ -15,19 +23,22 @@ functions of the form:
   $$
 - $(w,b)$ are the model parameters and represent the separation
 surface.
-- Classification rule: assign class 1 if $s(x)\ge t$, class 0 otherwise.
+- Classification rule: assign class 1 if $s(x)> t$, class 0 otherwise.
 - With equal priors and symmetric costs, the optimal threshold is $t=0$.
 - Decision boundaries are linear hyperplanes orthogonal to $w$.
 
 **Probabilistic interpretation** 
-* The score $s(x)$ corresponds to the **log-posterior odds**:
+* The score $s(x)$ corresponds to the **log-posterior ratio**:
 
   $$
   s(x) = \log \frac{P(C=1|x)}{P(C=0|x)}.
   $$
 - So, posterior probabilities for the classes are computed as: 
   $$
-  P(C=1|x; w, b) = \sigma(s(x; w,b)) = \frac{1}{1 + e^{-s(x)}}, \\ P(C=0|x; w,b) = 1 - \sigma(s(x;w,b)).
+  P(C=1|x; w, b) = \sigma(s(x; w,b)) = \frac{1}{1 + e^{-s(x)}}, 
+  $$
+  $$
+  P(C=0|x; w,b) = 1 - \sigma(s(x;w,b)).
   $$
 - Where $\sigma$ denotes the sigmoid function:
 ![sigmoid](./sigmoid.png) 
@@ -72,9 +83,9 @@ surface.
 * Model becomes:
 
   $$
-  s(x) = w^T \phi(x) + b.
+  s(x) = w^T \phi(x) + c.
   $$
-* The decision boundary is linear in $\phi(x)$ but non-linear in original space.
+* The decision boundary is linear in $\phi(x)$ but possibly non-linear in original space.
 * Example: polynomial feature expansion, kernelized logistic regression.
 
 ---
