@@ -475,38 +475,38 @@ This approach ensures that the chosen SVM model generalizes well by:
 
 Consider a binary classification problem, with classes labeled as 1 and 0, respectively.
 
-Let (DTR, LTR), (DVAL, LVAL) represent a labeled training set and a labeled validation
+Let `(DTR, LTR)`, `(DVAL, LVAL)` represent a labeled training set and a labeled validation
 
-set. DTR and DVAL are 2-D numpy arrays containing the dataset samples (stored as column
-vectors), whereas LTR and LVAL are 1-D numpy arrays containing the sample labels. Let also
-DTE represent the dataset matrix (again, a 2-D numpy array) containing the samples that our
+set. `DTR` and `DVAL` are 2-D numpy arrays containing the dataset samples (stored as column
+vectors), whereas `LTR` and `LVAL` are 1-D numpy arrays containing the sample labels. Let also
+`DTE` represent the dataset matrix (again, a 2-D numpy array) containing the samples that our
 application should classify.
 
 Write a Python code fragment that:
 
-1. trains acalibratedbinary classifier
-2. performs inference (i.e. computes predictedlabels) on the evaluation data
+1. trains a calibrated binary classifier
+2. performs inference (i.e. computes predicted labels) on the evaluation data
 
 You can assume that the following functions have been defined:
 
-- trainClassifier(D, L): train a non-calibrated classification model (e.g., an SVM or
-    an LDA classifier) on the training matrix D with associated labels array L, and return
+- `trainClassifier(D, L)`: train a non-calibrated classification model (e.g., an SVM or
+    an LDA classifier) on the training matrix `D` with associated labels array `L`, and return
     a python object containing the trained model (assume that the model does not contain
     tunable hyper-parameters)
-- scoreClassifier(model, D): compute the non-calibratedclassification scores for model
-    model (as returned by trainClassifier) for the samples in data matrix D and return
+- `scoreClassifier(model, D)`: compute the <u>non-calibrated</u> classification scores for model
+    `model` (as returned by `trainClassifier`) for the samples in data matrix `D` and return
     a 1-D array of scores
-- trainCalibrationModel(S, L, prior): train a calibration model on the 1-D array of
-    scores S, with associated array of labels L, for a binary application with prior prior for
+- `trainCalibrationModel(S, L, prior)`: train a calibration model on the 1-D array of
+    scores S, with associated array of labels L, for a binary application with prior `prior` for
     class 1, and return a python object containing the trained model
-- applyCalibrationModel(calModel, S): apply the calibration model calModel (as re-
-    turned by trainCalibrationModel) to the 1-D array of scores S, and return a 1-D array
+- `applyCalibrationModel(calModel, S)`: apply the calibration model `calModel` (as re-
+    turned by `trainCalibrationModel`) to the 1-D array of scores `S`, and return a 1-D array
     of calibrated scores
 
-NOTE: assume that the target application is characterized by an effective prior p for class 1.
+NOTE: assume that the target application is characterized by an effective prior `p` for class 1.
 
-You are not requiredto tune the calibration model hyper-parameter prior, but you can assume
-that the calibration model can be trained using the target application prior p.
+You are <u>not required</u> to tune the calibration model hyper-parameter `prior`, but you can assume
+that the calibration model can be trained using the target application prior `p`.
 
 ### Answer
 #### **Objective:**
