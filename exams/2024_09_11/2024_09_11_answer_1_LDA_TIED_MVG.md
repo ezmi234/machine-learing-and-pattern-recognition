@@ -39,7 +39,12 @@
 
 * **Model formulation & assumptions**:
   This is a **generative model**. Each class is modeled as a **Multivariate Gaussian with its own mean** but a **tied
-  covariance matrix**, assuming data $x \in R^d$, indipendent and identically distributed and for each class $c$:
+  covariance matrix**.
+The data samples $x \in \mathbb{R}^d$ are assumed to be **independent and identically distributed (i.i.d.)**. 
+
+For each class $c$:
+
+[//]: # (, assuming data $x \in R^d$, indipendent and identically distributed and for each class $c$:)
 
   $$
   X|C=c \sim \mathcal{N}(\mu_c, \Sigma), \quad \Sigma \text{ shared across classes}.

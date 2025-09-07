@@ -66,6 +66,7 @@ $$
 $$
 
 **Soft margin example**:
+
 ![soft-margin](./soft-margin.png)
 
 Here, the regularization parameter $C>0$ controls the trade-off between maximizing the margin and minimize the
