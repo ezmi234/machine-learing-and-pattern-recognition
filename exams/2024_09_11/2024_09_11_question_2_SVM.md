@@ -100,8 +100,31 @@ $$
   $$
   w = \sum_i \alpha_i z_i x_i.
   $$
+#### **5. KKT conditions**
 
-  Only points with $\alpha_i > 0$ (support vectors) influence the solution.
+The **Karush-Kuhn-Tucker (KKT) conditions** characterize optimality in SVMs. At the solution:
+
+1. **(Primal feasibility):**
+   $$z_i(w^T x_i + b) - 1 + \xi_i \geq 0,\ \ \ \xi_i \geq 0$$
+
+2. **(Dual feasibility):**
+   $$0 \leq \alpha_i \leq C$$
+
+3. 
+   $$w = \sum_i \alpha_i z_i x_i$$
+
+4. $$\sum_i \alpha_i z_i = 0$$
+
+5.
+   $$ \alpha_i \big[z_i(w^T x_i + b) - 1 + \xi_i \big] = 0$$
+
+These conditions imply:
+
+* If $\alpha_i = 0$, the point is irrelevant (well outside margin).
+* If $0 < \alpha_i < C$, the point lies **exactly on the margin** (a true support vector).
+* If $\alpha_i = C$, the point is inside the margin or misclassified.
+
+Thus, the **support vectors** are precisely the training samples that satisfy the KKT conditions with $\alpha_i > 0$.
 
   Dual reveals that SVM depends only on **inner products** of data, so we have the foundation for the **kernel trick**.
 
