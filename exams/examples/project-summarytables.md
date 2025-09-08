@@ -18,7 +18,7 @@
 | **Tied MVG**  | Discrete (worse than MVG) | ⭐ Close to minDCF        | Reliable (well calibrated)                 |
 | **Naive MVG** | Low                       | ⭐ Close to minDCF        | Overall performs better than tied          |
 | **GMM**       | ⭐ Lowest                  | ⭐ Low (close to minDCF)  | Best overall, flexible + fairly calibrated |
-
+---
 ### Linear vs Non-linear SVM with regularization
 
 - **Linear SVM**: Worst performances among the three in terms of minDCF, showing inability to capture complex patterns. The gap between minDCF and actDCF is large, resulting in a poorly calibrated model. Increasing the value of the hyperparameter C helps improve actDCF. Extremely small values of C can deteriorate the value of minDCF, whereas others show no impact.
@@ -32,7 +32,7 @@
 | **Linear SVM** | Decent               | ❌ Highest gap                          | medium-High C improve actDCF                                                                    | Requires calibration/regularization              |
 | **Poly SVM**   | Good                 | ❌ High gap vs minDCF                   | same as linear                                                                                  | Best gap but still miscalibrated                 |
 | **RBF SVM**    | ⭐ Best among SVMs    | ❌ High gap vs minDCF (similar to Poly) | Two Hyperparameters $\gamma$, C; minimum values of minDCF across $\gamma$ values at mid-range C | Slightly worse, needs calibration/regularization |
-
+---
 ### Logistic regression with regularization
 
 - **Standard LR**: Good, but sensitive to the choice of regularization parameter $\lambda$. Small $\lambda$ → risk of overfitting. Large $\lambda$ → underfitting (poor separation). The gap between minDCF and actDCF is visible, showing miscalibration. Increasing $\lambda$ stabilizes the actDCF but hurts the discriminative power.
@@ -47,3 +47,19 @@
 | **Weighted LR**  | Similar to Standard  | ❌ High gap vs minDCF                   | same as linear                                                                                  | Best gap but still miscalibrated                 |
 | **Quadratic LR** | ⭐ Best among SVMs    | ❌ High gap vs minDCF (similar to Poly) | Two Hyperparameters $\gamma$, C; minimum values of minDCF across $\gamma$ values at mid-range C | Slightly worse, needs calibration/regularization |
 
+---
+<br>
+
+### Summary Table
+| Model        | parameters                                                          | effective prior | minDCF | actDCF | Regularization | Notes                                                                                                                                |
+|--------------|---------------------------------------------------------------------|-----------------|--------|--------|----------------|--------------------------------------------------------------------------------------------------------------------------------------|
+| MVG          |                                                                     | 0.1             | 0.253  | 0.305  | N/A            | Low minDCF, still miscalibrated due to non-Gaussian features(needed MultiModal model)                                                |
+| Tied MVG     |                                                                     | 0.1             | 0.38   | 0.396  | N/A            | Poorer performances in terms of minDCF. The gap between minDCF and actDCF is smaller, resulting in a well calibrated model           |
+| Naive MVG    |                                                                     | 0.1             | 0.263  | 0.302  | N/A            | performs surprisingly well, almost matching standard MVG, which is explained by the low feature correlations observed in the dataset |
+| Standard LR  |                                                                     | 0.1             | 0.364  | 0.402  | λ              | small λ(weak regularization) small actDCF, big λ big actDCF                                                                          |
+| Weighted LR  |                                                                     | 0.1             | \\\\\  | \\\\\  | λ              | same as standard LR                                                                                                                  |
+| Quadratic LR |                                                                     | 0.1             | 0.247  | 0.277  | λ              | quadratic better performance(minDCF), regularization does not affect performances(minDCF) but affects calibration(actDCF)            |
+| Linear SVM   | N/A                                                                 | 0.1             | 0.358  | 0.489  | C              |                                                                                                                                      |
+| Poly SVM     | d=2                                                                 | 0.1             | 0.221  | 0.389  | C              | Good performance but still not calibrated(Better calibration big values of C(close to 1), worst small value of C)                    |
+| RBF SVM      | N/A                                                                 | 0.1             | 0.177  | 0.428  | C, γ           | RBF delivers good performance but not calibrated                                                                                     |
+| GMM          | components {class 0: 8; class 1: 32}, $\psi = 0.01$, $\alpha = 0.1$ | 0.1             | 0.131  | 0.152  | N/A            | best performance and calibration                                                                                                     |
