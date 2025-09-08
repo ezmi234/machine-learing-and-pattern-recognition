@@ -123,7 +123,3 @@
 * **MVG (unconstrained)**: flexible, quadratic boundaries, best when many samples are available.
 * **Naive Bayes**: diagonal covariance, simpler and effective with few samples but ignores correlations.
 * **Tied covariance**: linear boundaries, reliable with limited data if class covariances are similar, but less expressive if they are not.
-
----
-
-Do you want me to also **add the Bayes risk / DCF connection** (how decision thresholds depend on prior and costs, as in your notes) to make this even more exam-complete?
