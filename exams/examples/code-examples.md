@@ -373,3 +373,47 @@ def train_calibrated_and_predict(
 Why this is correct (in one breath):
 
 * Score calibration (e.g., prior-weighted logistic regression) learns an affine map turning raw scores into approximate LLRs; once scores are LLR-like, the Bayes-optimal threshold for prior `p` is `-log(p/(1-p))`. &#x20;
+
+
+<br>
+
+---
+
+# Functions code snippets
+### PCA
+```python
+def trainPCA(D: np.ndarray, m: int) -> np.ndarray:
+    """
+    Train a PCA projection on data.
+    Args:
+        D: (d, n) data matrix with column-wise samples.
+        m: target dimensionality (m <= d).
+    Returns:
+        P: (d, m) PCA projection matrix (columns are the top-m PCs).
+    """
+    # Center data
+    mu = vcol(D.mean(1))
+    # Compute covariance
+    C = (D - mu) @ (D - mu).T / D.shape[1]  # Covariance matrix
+    # SVD
+    U, _ = np.linalg.svd(C)
+    P = U[:, :m]  # Top-m principal components
+    
+    return P
+```
+
+```python
+def applyPCA(P: np.ndarray, D: np.ndarray) -> np.ndarray:
+    """
+    Apply a trained PCA projection.
+    Args:
+        P: (d, m) PCA projection matrix.
+        D: (d, n) data matrix.
+    Returns:
+        DP: (m, n) projected data.
+    """
+    return P.T @ D  # Project data onto PCA subspace
+```
+
+### LDA
+```python
